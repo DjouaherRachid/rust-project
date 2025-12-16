@@ -8,6 +8,12 @@ pub enum DirectoryError {
     InvalidEntry,
 }
 
+impl EntryType {
+    pub fn is_dir(&self) -> bool {
+        matches!(self, EntryType::Directory)
+    }
+}
+
 impl From<ClusterError> for DirectoryError {
     fn from(e: ClusterError) -> Self {
         DirectoryError::Cluster(e)

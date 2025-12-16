@@ -1,6 +1,8 @@
 //! Résolution des chemins FAT32 (absolus et relatifs)
 use crate::fs::boot_sector::BootSector;
 use crate::fs::directory::{DirectoryReader, DirectoryEntry, EntryType};
+use crate::device::block_device::BlockDevice;
+use alloc::vec::Vec;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum PathError {
@@ -73,3 +75,14 @@ impl<'a, D: crate::device::block_device::BlockDevice> PathResolver<'a, D> {
         Ok((current_cluster, last_entry))
     }
 }
+
+impl<'a, D: BlockDevice> PathResolver<'a, D> {
+    pub fn read_dir(&self, cluster: u32)
+        -> Result<Vec<DirectoryEntry>, PathError>
+    {
+        self.dir_reader
+            .read_dir(cluster)
+            .map_err(|_| PathError::NotFound)
+    }
+}
+
