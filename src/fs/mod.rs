@@ -4,3 +4,4 @@ pub mod clusters;
 pub mod directory;
 pub mod path;
 pub mod ls;
+pub mod cat;
